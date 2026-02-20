@@ -1,2 +1,1 @@
-# Deneme Repo
-Bu benim ilk GitHub projem
+It is my first git repo
