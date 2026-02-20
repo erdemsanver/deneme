@@ -1,0 +1,105 @@
+Part 1: Setup & Configuration
+1. Git Installation
+Git was already installed on my system, so no additional installation was needed.
+2. Verifying the Git version
+git --version
+# Output: git version 2.52.0
+3. Configuring username and email
+git config --global user.name "Erdem Sanver"
+git config --global user.email "b00818169@essec.edu"
+
+Part 2: Create Your First Repository
+mkdir my-first-repo        # Created the folder
+cd my-first-repo           # Navigated into it
+git init                   # Initialized a Git repository
+touch readme.txt           # Created the readme file
+
+Part 3: Your First Commit
+1. Command that shows the current state of the repository:
+git status
+2. Command that stages readme.txt for commit:
+git add readme.txt
+3. Command that commits with the message "Add readme file":
+git commit -m "Add readme file"
+4. Command that shows the commit history:
+git log
+
+Part 4: Make Changes
+1. I opened readme.txt and added a new line of text, for example: "This is my first Git repository."
+2. What git status shows now:
+After editing the file, git status shows that readme.txt appears under "Changes not staged for commit." This means Git has detected that the file was modified compared to the last commit, but the changes have not been added to the staging area yet — so they won't be included in the next commit unless I explicitly stage them.
+3. Staging and committing the changes:
+git add readme.txt
+git commit -m "Update readme with project description"
+4. Number of commits so far: 5
+
+Part 5: Exploration
+git diff
+This command shows the exact line-by-line differences between the current state of files in the working directory and the last commit. It's useful for reviewing what you've changed before deciding to stage or commit.
+git log --oneline
+This shows a condensed version of the commit history — one commit per line — displaying a short hash and the commit message. It's much easier to scan than the full git log when you just want a quick overview of what happened.
+
+Part 6: Working with Branches
+1. List all branches:
+git branch
+2. Create a new branch called feature-script:
+git branch feature-script
+3. Switch to feature-script:
+git switch feature-script
+4. Create and switch to a new branch called dev in one command:
+git switch -c dev
+5. Switch back to feature-script:
+git switch feature-script
+6. Verify the current branch:
+git branch    # The active branch will be highlighted with an asterisk (*)
+
+Part 7: Create a Bash Script on a Branch
+I made sure I was on the feature-script branch, then:
+touch install.sh
+Content added to install.sh:
+#!/bin/bash
+echo "Starting installation..."
+sudo apt update
+sudo apt install -y curl
+echo "Installation complete!"
+Making the script executable:
+chmod +x install.sh
+Staging and committing:
+git add install.sh
+git commit -m "Add install script"
+Checking commit history on this branch:
+git log --oneline
+
+Part 8: Merge Branches
+1. Switched back to main:
+git switch main
+2. Is install.sh present?
+No, install.sh is not present on the main branch at this point. This is expected — the file was created and committed on the feature-script branch. Branches in Git are isolated, so changes made on one branch don't affect another until they are explicitly merged.
+3. Command to merge feature-script into main:
+git merge feature-script
+4. After merging, listing the files with ls now shows install.sh present alongside readme.txt. The merge brought all changes from feature-script into main.
+5. Commit history observation:
+The commit history on main now includes commits from both branches — the original commits made on main as well as the "Add install script" commit from feature-script. Git integrates the full history.
+6. Deleting the feature-script branch after merging:
+git branch -d feature-script
+
+Part 9: Push to GitHub
+I created a new empty repository called my-first-repo on GitHub (without initializing it with a README).
+3. Command to link the local repo to GitHub:
+git remote add origin https://github.com/erdamsanver/my-first-repo.git
+4. Command to push commits to GitHub:
+git push -u origin main
+5. After refreshing the GitHub page, I can see all my files (readme.txt, install.sh) and the full commit history displayed on the repository page.
+
+Part 10: Delete and Clone
+1. Navigated out of the project folder:
+cd ..
+2. Command to delete the local repository folder:
+rm -rf my-first-repo
+3. Command to clone the repository from GitHub:
+git clone https://github.com/erdamsanver/my-first-repo.git
+4. After cloning, I navigated into the folder and verified the files:
+cd my-first-repo
+ls
+# Output: install.sh  readme.txt
+Both files were present, confirming the clone was successful and the full repository was restored from GitHub.
