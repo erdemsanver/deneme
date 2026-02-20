@@ -1,3 +1,4 @@
+#exercise 1, factory
 from abc import ABC, abstractmethod
 
 # 1. ABC — Superclass
@@ -71,8 +72,10 @@ class PaymentFactory:
             raise ValueError(f"Unknown payment type: {payment_type}")
         return processor()
 
-# Kullanım
+#how to use the code
 factory = PaymentFactory()
 processor = factory.get_processor("credit_card")
 result = processor.process(100.0, {"card_number": "1234567890123456", "cvv": "123", "expiry": "12/25"})
 print(result)
+
+
