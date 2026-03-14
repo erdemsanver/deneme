@@ -136,7 +136,7 @@ class PremiumMemberDecorator(OrderDecorator):
         discount = self._order.get_cost() * 0.10
         return self._order.get_description() + f"\nPremium member (10%): -{discount}€"
 
-# Kullanım
+# Wrapping
 if __name__ == "__main__":
     order = BaseOrder(100.00)
     order = ExpressShippingDecorator(order)
