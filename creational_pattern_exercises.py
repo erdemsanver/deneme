@@ -158,3 +158,68 @@ print(employee.first_name)   # John
 print(employee.department)   # Engineering
 print(employee.has_admin)    # True
 
+
+#Exo 3
+
+import json
+from abc import ABC, abstractmethod
+from typing import Any, Optional
+
+
+# Interface — "load() yazmak zorunda"
+class ConfigSource(ABC):
+    @abstractmethod
+    def load(self) -> dict:
+        raise NotImplementedError
+
+
+# JSON dosyasını okuyan class
+class JsonFileConfigSource(ConfigSource):
+    def __init__(self, path: str) -> None:
+        self._path = path
+
+    def load(self) -> dict:
+        with open(self._path, "r", encoding="utf-8") as f:
+            return json.load(f)  # dosyayı oku, dict döndür
+
+
+# Singleton — tek nesne, 1 kez dosya oku
+class ConfigManager:
+    _instance: Optional["ConfigManager"] = None  # tek nesneyi saklıyor
+
+    def __init__(self, source: ConfigSource) -> None:
+        self._config = source.load()  # dosya 1 kez okunuyor!
+
+    @classmethod
+    def get_instance(cls, source: Optional[ConfigSource] = None) -> "ConfigManager":
+        if cls._instance is None:          # daha önce yaratıldı mı?
+            if source is None:
+                source = JsonFileConfigSource("config.json")  # default
+            cls._instance = cls(source)    # 1 kez yarat, sakla
+        return cls._instance               # hep aynısını döndür
+
+    def get(self, key: str, default: Any = None) -> Any:
+        current: Any = self._config
+        for part in key.split("."):        # "database.host" → ["database", "host"]
+            if isinstance(current, dict) and part in current:
+                current = current[part]    # içe doğru git
+            else:
+                return default             # bulunamazsa default döndür
+        return current
+
+
+# Kullanım
+if __name__ == "__main__":
+    # 1. çağrı — dosya okundu, nesne yaratıldı
+    config1 = ConfigManager.get_instance()
+
+    # 2. çağrı — aynı nesne döndü, dosya okuma yok!
+    config2 = ConfigManager.get_instance()
+
+    # Aynı nesne mi?
+    print(config1 is config2)  # True!
+
+    # Config değerlerine erişim
+    print(config1.get("database.host"))   # "localhost"
+    print(config1.get("app.name"))        # "PaymentPlatform"
+    print(config1.get("app.debug"))       # True
