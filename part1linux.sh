@@ -27,7 +27,7 @@ detect_os() {
 check_python() {
     print_message "Checking for Python3..."
 
-    if command -v python3 &> /dev/null; then
+    if command -v python3 &> /dev/null; then # &> /dev/null means show nothing if python3 exists..
         PYTHON_VERSION=$(python3 --version)
         print_message "Python3 is already installed: $PYTHON_VERSION"
     else
@@ -78,8 +78,8 @@ install_jupyter() {
 check_brew_health() {
     if [[ "$OS" == "macOS" ]]; then
         print_message "Running Homebrew diagnostics..."
-        brew doctor
-    fi
+        brew doctor # it verifies if homebrew (package manager) works succesfully
+    f
 }
 
 # Main
